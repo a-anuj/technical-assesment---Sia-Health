@@ -120,3 +120,41 @@ body {
   background-color: #fdecea;
   color: #b91c1c;
 }
+
+/* Check Results Section */
+.check-results {
+  margin-top: 24px;
+}
+
+.check-block {
+  margin-bottom: 24px;
+}
+
+.check-block ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.check-block li {
+  margin-bottom: 6px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* Label spacing */
+.check-block strong {
+  margin-right: 6px;
+}
+
+/* Improve status visibility */
+.check-block .status {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Optional subtle divider */
+.check-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 20px 0;
+}
