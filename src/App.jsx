@@ -10,26 +10,15 @@ import { runCheck1 } from "./checks/check1";
 function App() {
   const [check1Results, setCheck1Results] = useState([]);
 
-    useEffect(() => {
-      console.log("App mounted");
+  useEffect(() => {
+    const normalizedMealPlan = normalizeMealPlan(rawMealPlan);
+    const results = runCheck1(normalizedMealPlan);
+    setCheck1Results(results);
+  }, []);
 
-      const normalizedMealPlan = normalizeMealPlan(rawMealPlan);
-      console.log("Normalized:", normalizedMealPlan);
-
-      const results = runCheck1(normalizedMealPlan);
-      console.log("Check1 results:", results);
-
-      setCheck1Results(results);
-    }, []);
-
-
-  // ---- SUMMARY LOGIC ----
+  // ---- SUMMARY LOGIC (UNCHANGED) ----
   const proteinIssues = check1Results.filter(
     r => r.check === "Protein" && r.status !== "OK"
-  );
-
-  const portionIssues = check1Results.filter(
-    r => r.check === "Portion Size" && r.status !== "OK"
   );
 
   const proteinStatus =
@@ -39,10 +28,6 @@ function App() {
       ? "Warning"
       : "OK";
 
-  const portionStatus =
-    portionIssues.length > 0 ? "Needs Improvement" : "OK";
-
-  // ---- DERIVED INSIGHTS (IMPORTANT FIX) ----
   const detectedProteinSources = [
     ...new Set(
       check1Results
@@ -56,112 +41,113 @@ function App() {
     )
   ];
 
-  // ---- EXTRACT PORTION RESULT (FIX) ----
   const portionResult = check1Results.find(
     r => r.check === "Portion Size" && r.scope === "Weekly"
   );
 
-
   return (
     <div className="page-container">
-      {/* 1. Client Summary */}
-      <ClientSummary />
-
-      {/* 2. Quality Check 1 */}
-      <div className="card">
-        
-
-        {/* Protein Check */}
-        <div className="check-block">
-          <h2>Quality Check 1 - Protein Based</h2>
-          <ul>
-            <li>
-              <strong>Status:</strong>{" "}
-              <span
-                className={`status ${proteinStatus
-                  .toLowerCase()
-                  .replace(" ", "-")}`}
-              >
-                {proteinStatus}
-              </span>
-            </li>
-
-            <li>
-              <strong>Why:</strong>{" "}
-            
-              {proteinStatus === "OK" && (
-                <>
-                  Protein sources are consistently present across meals.
-                  <br />
-                  <strong>Detected sources:</strong>{" "}
-                  {detectedProteinSources.join(", ")}
-                </>
-              )}
-
-              {proteinStatus === "Warning" && (
-                <>
-                  Protein sources are present but limited in some meals.
-                  <br />
-                  <strong>Detected sources:</strong>{" "}
-                  {detectedProteinSources.join(", ")}
-                </>
-              )}
-
-              {proteinStatus === "Needs Improvement" && (
-                <>
-                  Several meals lack clearly defined protein sources,
-                  particularly during earlier meals.
-                </>
-              )}
-            </li>
-          </ul>
+      {/* ===== TOP SECTION ===== */}
+      <div className="top-layout">
+        {/* LEFT: Client Summary */}
+        <div className="left-panel">
+          <ClientSummary />
         </div>
 
-        <div className="check-divider"></div>
+        {/* RIGHT: Quality Check 1 */}
+        <div className="right-panel">
+          <div className="card">
+            <h2><b>Quality Check - 1</b></h2>
+            <hr />
+            {/* Protein Check */}
+            <div className="check-block">
+              <h4 className="checks">Protien Based</h4>
+              <ul>
+                <li>
+                  <strong>Status:</strong>{" "}
+                  <span
+                    className={`status ${proteinStatus
+                      .toLowerCase()
+                      .replace(" ", "-")}`}
+                  >
+                    {proteinStatus}
+                  </span>
+                </li>
 
-        {/* Portion Size Check */}
-          {portionResult && (
-          <div className="check-block">
-            <h2>Quality Check 1 – Portion Based</h2>
+                <li>
+                  <strong>Why:</strong>{" "}
+                  {proteinStatus === "OK" && (
+                    <>
+                      Protein sources are consistently present across meals.
+                      <br />
+                      <strong>Detected sources:</strong>{" "}
+                      {detectedProteinSources.join(", ")}
+                    </>
+                  )}
 
-            <ul>
-              <li>
-                <strong>Status:</strong>{" "}
-                <span
-                  className={`status ${portionResult.status
-                    .toLowerCase()
-                    .replace(" ", "-")}`}
-                >
-                  {portionResult.status}
-                </span>
-              </li>
+                  {proteinStatus === "Warning" && (
+                    <>
+                      Protein sources are present but limited in some meals.
+                      <br />
+                      <strong>Detected sources:</strong>{" "}
+                      {detectedProteinSources.join(", ")}
+                    </>
+                  )}
 
-              <li>
-                <strong>Coverage:</strong>{" "}
-                {portionResult.mealsWithPortion} out of{" "}
-                {portionResult.totalMeals} meals
-                ({portionResult.coveragePercent}%) has portions defined explicitly.
-              </li>
+                  {proteinStatus === "Needs Improvement" && (
+                    <>
+                      Several meals lack clearly defined protein sources,
+                      particularly during earlier meals.
+                    </>
+                  )}
+                </li>
+              </ul>
+            </div>
 
-              <li>
-                <strong>Why:</strong> {portionResult.reason}
-              </li>
-            </ul>
+            <div className="check-divider"></div>
+
+            {/* Portion Size Check */}
+            {portionResult && (
+              <div className="check-block">
+                <h4 className="checks">Portion Based</h4>
+
+                <ul>
+                  <li>
+                    <strong>Status:</strong>{" "}
+                    <span
+                      className={`status ${portionResult.status
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
+                    >
+                      {portionResult.status}
+                    </span>
+                  </li>
+
+                  <li>
+                    <strong>Coverage:</strong>{" "}
+                    {portionResult.mealsWithPortion} out of{" "}
+                    {portionResult.totalMeals} meals
+                    ({portionResult.coveragePercent}%) have portions explicitly
+                    defined.
+                  </li>
+
+                  <li>
+                    <strong>Why:</strong> {portionResult.reason}
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
-        )}
-
-
-
-        
+        </div>
       </div>
 
-      {/* 3. Quality Check 2 (AI-assisted placeholder) */}
+      {/* ===== BOTTOM SECTION ===== */}
       <div className="card">
         <h2>Quality Check 2 (AI-assisted)</h2>
         <p>
-          The meal plan broadly aligns with the client’s PCOS profile,
-          but potential concerns exist around carbohydrate distribution
-          and digestive sensitivity.
+          The meal plan broadly aligns with the client’s PCOS profile, but
+          potential concerns exist around carbohydrate distribution and
+          digestive sensitivity.
         </p>
       </div>
     </div>

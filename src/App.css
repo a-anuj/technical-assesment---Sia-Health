@@ -63,7 +63,7 @@ body {
 
 /* Main page content (below navbar) */
 .page-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 32px auto;
   padding: 0 20px;
 }
@@ -157,4 +157,37 @@ body {
   height: 1px;
   background-color: #e5e7eb;
   margin: 20px 0;
+}
+
+/* ===== Top two-column layout ===== */
+.top-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+/* Left: Client summary */
+.left-panel {
+  flex: 1.5;
+}
+
+/* Right: Quality checks */
+.right-panel {
+  flex: 1.2;
+}
+
+/* Ensure cards stretch properly */
+.left-panel .card,
+.right-panel .card {
+  width: 100%;
+}
+
+.checks{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.clientSummaryTop{
+  margin-top: 10px;
 }
