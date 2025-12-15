@@ -6,9 +6,9 @@ function ClientSummary() {
   return (
     <div className="card">
       <h2>Client Summary</h2>
-
+      <hr />
       {/* Basic Info */}
-      <p><strong>Age:</strong> {basicHistory.age}</p>
+      <p className="clientSummaryTop"><strong>Age:</strong> {basicHistory.age}</p>
       <p><strong>Weight:</strong> {basicHistory.weightKg} kg</p>
       <p><strong>Height:</strong> {basicHistory.heightCm} cm</p>
       <p><strong>Duration of Symptoms:</strong> {basicHistory.durationOfSymptoms}</p>
