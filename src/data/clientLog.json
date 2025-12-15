@@ -1,0 +1,39 @@
+{
+  "basicHistory": {
+    "age": 31,
+    "primarySymptoms": [
+      "PCOS",
+      "Hormonal acne",
+      "Weight gain issues"
+    ],
+    "durationOfSymptoms": "Over 3 years",
+    "symptomBrief": [
+      "PCOS",
+      "Fatigue or low energy levels",
+      "Weight management difficulties",
+      "Digestive issues",
+      "Hairfall",
+      "PMS (Pre-menstrual syndrome)",
+      "Menstrual pain",
+      "Body image concerns"
+    ],
+    "weightKg": 91.5,
+    "heightCm": 165
+  },
+  "medical": {
+    "hormonalProfile": {
+      "FSH_FH_ratio": "1"
+    },
+    "inflammationMarkers": {
+      "TGDS": 205,
+      "uricAcid": 8.3,
+      "testosterone": 103,
+      "TSH": 7.167
+    },
+    "medication": [
+      "Contraceptives (prior)",
+      "Omega 3",
+      "Multivitamin"
+    ]
+  }
+}

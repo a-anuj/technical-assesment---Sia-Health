@@ -1,0 +1,71 @@
+{
+  "earlyMorning": {
+    "Day1": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day2": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day3": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day4": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day5": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day6": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder",
+    "Day7": "1 glass warm water with a few drops lime juice + 1/2 tsp anti inflammatory powder"
+  },
+
+  "breakfast_9_10_am": {
+    "Day1": "Peach Smoothie (Peach 1 small sized + rolled oats 1–1.5 tbsp + 150 ml water + 1 scoop protein)",
+    "Day2": "Berries Smoothie",
+    "Day3": "Peach Smoothie (Peach 1 small sized + rolled oats 1–1.5 tbsp + 150 ml water + 1 scoop protein)",
+    "Day4": "Berries Smoothie",
+    "Day5": "Peach Smoothie (Peach 1 small sized + rolled oats 1–1.5 tbsp + 150 ml water + 1 scoop protein)",
+    "Day6": "Berries Smoothie",
+    "Day7": "Avocado toast (Using a wheat sourdough bread)"
+  },
+
+  "midMorning_11_am": {
+    "Day1": "100gm seasonal fruit",
+    "Day2": "100gm seasonal fruit",
+    "Day3": "100gm seasonal fruit",
+    "Day4": "100gm seasonal fruit",
+    "Day5": "100gm seasonal fruit",
+    "Day6": "100gm seasonal fruit",     
+    "Day7": "100gm seasonal fruit"
+  },
+
+  "lunch_1_2_pm": {
+    "Day1": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day2": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day3": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day4": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day5": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day6": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)",
+    "Day7": "1 small bowl basic salad (carrot, cucumber, tomato, onion) + 1 small bowl rajma curry + 50gm boiled rice + 100gm curd (homemade or greek)"
+  },
+
+  "eveningSnack_5_pm": {
+    "Day1": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day2": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day3": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day4": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day5": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day6": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix",
+    "Day7": "1 small cup tea / Spearmint tea with 1 small bowl roasted makhana chana mix"
+  },
+
+  "dinner_7_8_pm": {
+    "Day1": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day2": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day3": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day4": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day5": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day6": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing",
+    "Day7": "1 bowl protein salad (70gm grilled paneer + veggies like tomatoes + onion + cucumber + carrot + beetroot + lettuce) with 1 tbsp curd dressing / 1 tbsp apple cider vinegar lime dressing"
+  },
+
+  "postDinner": {
+    "Day1": "1 glass of water",
+    "Day2": "1 glass of water",
+    "Day3": "1 glass of water",
+    "Day4": "1 glass of water",
+    "Day5": "1 glass of water",
+    "Day6": "1 glass of water",
+    "Day7": "1 glass of water"
+  }
+}
