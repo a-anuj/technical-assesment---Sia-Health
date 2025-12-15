@@ -1,10 +1,11 @@
-// Simple assumptions (document these in README)
+// ---------------- ASSUMPTIONS (document in README) ----------------
 const PROTEIN_SOURCES = [
   "protein",
   "paneer",
   "rajma",
   "curd",
-  "greek"
+  "greek",
+  "salad"
 ];
 
 const PORTION_KEYWORDS = [
@@ -19,16 +20,29 @@ const PORTION_KEYWORDS = [
   "scoop"
 ];
 
-// ---- Helpers ----
+const MEAL_TYPES = [
+  "breakfast",
+  "lunch",
+  "dinner",
+  "midMorningSnack",
+  "eveningSnack"
+];
+
+const MAIN_MEALS = ["breakfast", "lunch", "dinner"];
+
+// ---------------- HELPERS ----------------
 function estimateProtein(mealText = "") {
   const text = mealText.toLowerCase();
-  let score = 0;
+  const sources = [];
 
   PROTEIN_SOURCES.forEach(src => {
-    if (text.includes(src)) score += 1;
+    if (text.includes(src)) sources.push(src);
   });
 
-  return score; // heuristic, not grams
+  return {
+    score: sources.length,
+    sources
+  };
 }
 
 function hasPortion(mealText = "") {
@@ -36,52 +50,88 @@ function hasPortion(mealText = "") {
   return PORTION_KEYWORDS.some(k => text.includes(k));
 }
 
-// ---- MAIN CHECK 1 ----
+// ---------------- CHECK 1 ----------------
 export function runCheck1(mealPlan) {
   const results = [];
 
-  Object.entries(mealPlan).forEach(([day, meals]) => {
-    ["breakfast", "lunch", "dinner"].forEach(mealType => {
-      const mealText = meals[mealType];
+  // ---------- WEEKLY PROTEIN METRICS ----------
+  let totalMainMeals = 0;
+  let mealsWithProtein = 0;
+  const detectedProteinSources = new Set();
 
+  // ---------- WEEKLY PORTION METRICS ----------
+  let totalMeals = 0;
+  let mealsWithPortion = 0;
+
+  Object.values(mealPlan).forEach(meals => {
+    MEAL_TYPES.forEach(mealType => {
+      const mealText = meals[mealType];
       if (!mealText) return;
 
-      // Protein check
-      const proteinScore = estimateProtein(mealText);
-      let proteinStatus = "Needs Improvement";
+      totalMeals += 1;
 
-      if (proteinScore >= 2) proteinStatus = "OK";
-      else if (proteinScore === 1) proteinStatus = "Warning";
+      // ---- Protein (ONLY main meals) ----
+      const { score, sources } = estimateProtein(mealText);
 
-      results.push({
-        day,
-        check: "Protein",
-        meal: mealType,
-        status: proteinStatus,
-        reason:
-          proteinStatus === "OK"
-            ? "Clear protein sources present."
-            : proteinStatus === "Warning"
-            ? "Limited protein sources mentioned."
-            : "No clear protein source mentioned."
-      });
+      if (MAIN_MEALS.includes(mealType)) {
+        totalMainMeals += 1;
 
-      // Portion size check
-      const portionStatus = hasPortion(mealText)
-        ? "OK"
-        : "Needs Improvement";
+        if (score > 0) {
+          mealsWithProtein += 1;
+          sources.forEach(src => detectedProteinSources.add(src));
+        }
+      }
 
-      results.push({
-        day,
-        check: "Portion Size",
-        meal: mealType,
-        status: portionStatus,
-        reason:
-          portionStatus === "OK"
-            ? "Portion sizes are specified."
-            : "Meal lacks clear portion size details."
-      });
+      // ---- Portion (ALL meals) ----
+      if (hasPortion(mealText)) {
+        mealsWithPortion += 1;
+      }
     });
+  });
+
+  // ---------- FINAL WEEKLY PROTEIN RESULT ----------
+  const proteinCoverage = mealsWithProtein / totalMainMeals;
+
+  let proteinStatus = "Needs Improvement";
+  if (proteinCoverage >= 0.8) proteinStatus = "OK";
+  else if (proteinCoverage >= 0.5) proteinStatus = "Warning";
+
+  results.push({
+    check: "Protein",
+    scope: "Weekly",
+    status: proteinStatus,
+    coveragePercent: Math.round(proteinCoverage * 100),
+    mealsWithProtein,
+    totalMainMeals,
+    proteinSources: Array.from(detectedProteinSources),
+    reason:
+      proteinStatus === "OK"
+        ? "Protein sources are consistently present across the weekly plan."
+        : proteinStatus === "Warning"
+        ? "Protein sources are present but inconsistent across the weekly plan."
+        : "The weekly plan lacks sufficient protein coverage across main meals."
+  });
+
+  // ---------- FINAL WEEKLY PORTION RESULT ----------
+  const portionCoverage = mealsWithPortion / totalMeals;
+
+  let portionStatus = "Needs Improvement";
+  if (portionCoverage >= 0.8) portionStatus = "OK";
+  else if (portionCoverage >= 0.5) portionStatus = "Warning";
+
+  results.push({
+    check: "Portion Size",
+    scope: "Weekly",
+    status: portionStatus,
+    coveragePercent: Math.round(portionCoverage * 100),
+    mealsWithPortion,
+    totalMeals,
+    reason:
+      portionStatus === "OK"
+        ? "Portion sizes are clearly specified for most meals in the weekly plan."
+        : portionStatus === "Warning"
+        ? "Portion sizes are specified for some meals but missing in others."
+        : "A large number of meals lack clearly specified portion sizes."
   });
 
   return results;
