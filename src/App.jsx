@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 import ClientSummary from "./components/ClientSummary";
+import clientLog from "/home/a-anuj/Desktop/Sia_Health_Technical_Assignment/src/data/clientLog.json";
 
 import rawMealPlan from "./data/mealPlan.json";
 import { normalizeMealPlan } from "./utils/normalizeMealPlan";
 import { runCheck1 } from "./checks/check1";
+import QualityCheckAI from "./components/QualityCheckAI";
 
 function App() {
   const [check1Results, setCheck1Results] = useState([]);
@@ -28,6 +30,14 @@ function App() {
       ? "Warning"
       : "OK";
 
+  const proteinWeeklyResult = check1Results.find(
+    r => r.check === "Protein" && r.scope === "Weekly"
+  );
+
+  const proteinCoveragePercent = proteinWeeklyResult?.coveragePercent ?? 0;
+  const totalMainMeals = proteinWeeklyResult?.totalMainMeals ?? 0;
+  const mealsWithProtein = proteinWeeklyResult?.mealsWithProtein ?? 0;
+
   const detectedProteinSources = [
     ...new Set(
       check1Results
@@ -41,9 +51,15 @@ function App() {
     )
   ];
 
-  const portionResult = check1Results.find(
-    r => r.check === "Portion Size" && r.scope === "Weekly"
-  );
+  
+    const portionResult = check1Results.find(
+      r => r.check === "Portion Size" && r.scope === "Weekly"
+    );
+
+    const portionCoveragePercent = portionResult?.coveragePercent ?? null;
+
+    const planMetrics = { proteinCoveragePercent, proteinStatus, detectedProteinSources,
+       portionCoveragePercent, totalMainMeals, mealsWithProtein};
 
   return (
     <div className="page-container">
@@ -73,6 +89,7 @@ function App() {
                     {proteinStatus}
                   </span>
                 </li>
+
 
                 <li>
                   <strong>Why:</strong>{" "}
@@ -127,8 +144,7 @@ function App() {
                     <strong>Coverage:</strong>{" "}
                     {portionResult.mealsWithPortion} out of{" "}
                     {portionResult.totalMeals} meals
-                    ({portionResult.coveragePercent}%) have portions explicitly
-                    defined.
+                    ({portionResult.coveragePercent}%) have explicitly defined portions.
                   </li>
 
                   <li>
@@ -142,14 +158,7 @@ function App() {
       </div>
 
       {/* ===== BOTTOM SECTION ===== */}
-      <div className="card">
-        <h2>Quality Check 2 (AI-assisted)</h2>
-        <p>
-          The meal plan broadly aligns with the client’s PCOS profile, but
-          potential concerns exist around carbohydrate distribution and
-          digestive sensitivity.
-        </p>
-      </div>
+        <QualityCheckAI clientSummary={clientLog} mealPlanSummary={planMetrics}/>
     </div>
   );
 }
