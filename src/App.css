@@ -1,42 +1,122 @@
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base page styling */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #f7f8fa;
+  color: #1f2933;
+}
+
+/* Root wrapper – do NOT constrain navbar */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Navbar (full width, top aligned) */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #ffffff;
+  padding: 16px 24px;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Navbar title */
+.navbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Navbar action buttons */
+.navbar-actions button {
+  margin-left: 12px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
+.navbar-actions button:last-child {
+  background-color: #059669;
+}
+
+.navbar-actions button:hover {
+  opacity: 0.9;
+}
+
+/* Main page content (below navbar) */
+.page-container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+/* Card layout */
 .card {
-  padding: 2em;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.read-the-docs {
-  color: #888;
+/* Card headings */
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+/* Card text */
+.card p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* Emphasized labels */
+.card strong {
+  color: #374151;
+}
+
+/* Status badges (for checks) */
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.ok {
+  background-color: #e6f4ea;
+  color: #137333;
+}
+
+.status.warning {
+  background-color: #fff4e5;
+  color: #b45309;
+} 
+
+.status.needs-improvement {
+  background-color: #fdecea;
+  color: #b91c1c;
 }
