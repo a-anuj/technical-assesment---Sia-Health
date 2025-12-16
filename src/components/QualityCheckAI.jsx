@@ -7,9 +7,7 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // --- 1. THE FIX: GUARD CLAUSE ---
-    // If there are no meals detected yet (data hasn't loaded),
-    // STOP here. Do not call the AI with 0s.
+
     if (!mealPlanSummary || mealPlanSummary.totalMainMeals === 0) {
       return; 
     }
@@ -96,9 +94,7 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
     runAI();
   }, [clientSummary, mealPlanSummary]);
 
-  // --- 2. THE FIX: LOADING STATE FOR DATA ---
-  // If data is still zero (haven't loaded from sheet yet), show "Loading Data"
-  // instead of "AI Analyzing" or an empty card.
+
   if (!mealPlanSummary || mealPlanSummary.totalMainMeals === 0) {
     return <div className="card">Loading meal plan data...</div>;
   }
@@ -107,26 +103,19 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
     return <div className="card">AI is analyzing plan fit…</div>;
   }
 
-  // --- LOGIC FOR HUMAN INTERPRETATION ---
-// --- LOGIC FOR HUMAN INTERPRETATION ---
   const proteinScore = mealPlanSummary.proteinCoveragePercent;
   
-  // 1. Get the conditions as a string to check for keywords
   const conditionsStr = JSON.stringify(clientSummary).toLowerCase();
   
   let humanInterpretationText = "";
 
-  // 2. Smart Logic: Check for specific conditions to tailor the insight
   if (conditionsStr.includes("uric") || conditionsStr.includes("gout")) {
-     // Specific insight for Uric Acid
      humanInterpretationText = `The protein coverage is ${proteinScore}%, which is excellent for satiety. However, the client has Elevated Uric Acid. The AI correctly flagged that while the quantity of protein is good, the source (purine-rich foods like Rajma) poses a specific metabolic risk for Gout. This requires a substitution, not just a reduction.`;
   
   } else if (conditionsStr.includes("pcos") && proteinScore > 80) {
-     // Specific insight for PCOS
      humanInterpretationText = `The protein coverage is ${proteinScore}%, which is highly beneficial for PCOS insulin management. The AI's concern regarding caloric balance is valid, but high protein is generally preferred for this condition. I would override the calorie concern in favor of the satiety benefits here.`;
   
   } else {
-     // Fallback (Generic)
      humanInterpretationText = `The protein coverage is ${proteinScore}%, which is typically excellent. However, considering the client's reported history, we must ensure these sources are easily digestible. The AI highlights potential contradictions that warrant a second look at ingredient quality.`;
   }
 

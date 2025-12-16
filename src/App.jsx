@@ -5,7 +5,6 @@ import ClientSummary from "./components/ClientSummary";
 import clientLog from "/home/a-anuj/Desktop/Sia_Health_Technical_Assignment/src/data/clientLog.json";
 
 import rawMealPlan from "./data/mealPlan.json";
-// Import the image (ensure this path is correct based on your folder structure)
 import mealPlanImg from "./assets/mealPlan.png"; 
 
 import { normalizeMealPlan } from "./utils/normalizeMealPlan";
@@ -21,7 +20,6 @@ function App() {
     setCheck1Results(results);
   }, []);
 
-  // ---- SUMMARY LOGIC (UNCHANGED) ----
   const proteinIssues = check1Results.filter(
     (r) => r.check === "Protein" && r.status !== "OK"
   );
@@ -71,7 +69,6 @@ function App() {
   return (
     <div className="page-container">
       
-      {/* ===== ROW 1: SPLIT VIEW (Client + Meal Plan) ===== */}
       <div className="top-layout" style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
         
         {/* LEFT: Client Summary */}
@@ -98,7 +95,6 @@ function App() {
         </div>
       </div>
 
-      {/* ===== ROW 2: QUALITY CHECK 1 (Full Width) ===== */}
       <div className="middle-layout" style={{ marginBottom: '20px' }}>
         <div className="card">
           <h2><b>Quality Check - 1 (Rule Based)</b></h2>
@@ -186,7 +182,7 @@ function App() {
         </div>
       </div>
 
-      {/* ===== ROW 3: QUALITY CHECK 2 (AI) ===== */}
+      {/* QUALITY CHECK 2 (AI) */}
       <div className="bottom-layout">
         <QualityCheckAI clientSummary={clientLog} mealPlanSummary={planMetrics} />
       </div>

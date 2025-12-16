@@ -1,4 +1,3 @@
-// ---------------- ASSUMPTIONS (document in README) ----------------
 const PROTEIN_SOURCES = [
   "protein",
   "paneer",
@@ -31,7 +30,6 @@ const MEAL_TYPES = [
 
 const MAIN_MEALS = ["breakfast", "lunch", "dinner","eveningSnack"];
 
-// ---------------- HELPERS ----------------
 function estimateProtein(mealText = "") {
   const text = mealText.toLowerCase();
   const sources = [];
@@ -51,16 +49,13 @@ function hasPortion(mealText = "") {
   return PORTION_KEYWORDS.some(k => text.includes(k));
 }
 
-// ---------------- CHECK 1 ----------------
 export function runCheck1(mealPlan) {
   const results = [];
 
-  // ---------- WEEKLY PROTEIN METRICS ----------
   let totalMainMeals = 0;
   let mealsWithProtein = 0;
   const detectedProteinSources = new Set();
 
-  // ---------- WEEKLY PORTION METRICS ----------
   let totalMeals = 0;
   let mealsWithPortion = 0;
 
@@ -71,7 +66,6 @@ export function runCheck1(mealPlan) {
 
       totalMeals += 1;
 
-      // ---- Protein (ONLY main meals) ----
       const { score, sources } = estimateProtein(mealText);
 
       if (MAIN_MEALS.includes(mealType)) {
@@ -83,14 +77,12 @@ export function runCheck1(mealPlan) {
         }
       }
 
-      // ---- Portion (ALL meals) ----
       if (hasPortion(mealText)) {
         mealsWithPortion += 1;
       }
     });
   });
 
-  // ---------- FINAL WEEKLY PROTEIN RESULT ----------
   const proteinCoverage = mealsWithProtein / totalMainMeals;
 
   let proteinStatus = "Needs Improvement";
@@ -113,7 +105,6 @@ export function runCheck1(mealPlan) {
         : "The weekly plan lacks sufficient protein coverage across main meals."
   });
 
-  // ---------- FINAL WEEKLY PORTION RESULT ----------
   const portionCoverage = mealsWithPortion / totalMeals;
 
   let portionStatus = "Needs Improvement";
