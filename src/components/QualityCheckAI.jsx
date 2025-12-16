@@ -31,12 +31,17 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
           Answer ONLY in valid JSON:
           {
             "alignment": "High | Medium | Low",
-            "concerns": ["max 2 points"],
+            "concerns": ["max 3 points"],
             "positives": ["max 2 points"]
           }
 
-          In key concern say how much protien is available and how much is needed
-
+          In key concern you must answer all these questions :
+              Does this plan align with the client’s medical history?
+              Are there contradictions between the plan and the health log?
+              What are 1–2 high-level concerns?
+            
+              These are only examples, if you find something important to convey based on the diet and clientSummary please proceed with that also
+          
           Rules:
           - Do NOT say protein is missing if coverage > 50%
           - Do NOT invent missing data
@@ -105,14 +110,9 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
     <div className="card">
       <h2>Quality Check 2 – AI-Assisted Plan Fit</h2>
 
-      <p>
-        <strong>Overall Alignment:</strong>{" "}
-        <span className={`status ${result.alignment.toLowerCase()}`}>
-          {result.alignment}
-        </span>
-      </p>
+      
 
-      <div className="check-block">
+      <div className="check-block-1">
         <strong>Key Concerns:</strong>
         <ul>
           {result.concerns.map((c, i) => (
@@ -129,6 +129,13 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
           ))}
         </ul>
       </div>
+
+      <p>
+        <strong>Overall Alignment:</strong>{" "}
+        <span className={`status ${result.alignment.toLowerCase()}`}>
+          {result.alignment}
+        </span>
+      </p>
 
       <p style={{ fontSize: "12px", opacity: 0.7 }}>
         AI insights are structured and interpreted at a high level.
