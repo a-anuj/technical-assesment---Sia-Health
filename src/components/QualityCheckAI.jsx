@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 
-
-
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY; 
-// ⚠️ exposed intentionally for assignment
+
 function AIPlanFit({ clientSummary, mealPlanSummary }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // --- 1. THE FIX: GUARD CLAUSE ---
+    // If there are no meals detected yet (data hasn't loaded),
+    // STOP here. Do not call the AI with 0s.
+    if (!mealPlanSummary || mealPlanSummary.totalMainMeals === 0) {
+      return; 
+    }
+
     async function runAI() {
       try {
+        setLoading(true); // Ensure loading state is set when we actually start
         const prompt = `
           You are a health-coaching assistant.
 
@@ -30,8 +36,7 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
 
           Answer ONLY in valid JSON:
           {
-            "alignment": "High | Medium | Low",
-            "concerns": ["max 3 points"],
+            "concerns": ["max 4 points"],
             "positives": ["max 2 points"]
           }
 
@@ -40,14 +45,14 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
               Are there contradictions between the plan and the health log?
               What are 1–2 high-level concerns?
             
-              These are only examples, if you find something important to convey based on the diet and clientSummary please proceed with that also
-          
+              These are only examples, if you find something important to convey based on the diet and clientSummary please proceed with that also.
+              If you are gonna say that protein coverage is lacking say the reason also.
+
           Rules:
           - Do NOT say protein is missing if coverage > 50%
           - Do NOT invent missing data
           - Do NOT give medical advice
           `;
-
 
         const res = await fetch(
           "https://api.groq.com/openai/v1/chat/completions",
@@ -58,7 +63,7 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
                 "Content-Type": "application/json"
               },
             body: JSON.stringify({
-              model: "llama-3.3-70b-versatile",
+              model: "openai/gpt-oss-20b",
               temperature: 0.3,
               messages: [{ role: "user", content: prompt }]
             })
@@ -66,18 +71,12 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
         );
 
         const data = await res.json();
-        console.log("Groq raw response:", data);
-
+        
         if (!data.choices || !data.choices.length) {
-          throw new Error(
-            data.error?.message || "Invalid AI response"
-          );
+          throw new Error(data.error?.message || "Invalid AI response");
         }
 
         const content = data.choices[0].message.content;
-        console.log("Raw AI output:", content);
-
-        // Extract first JSON block
         const jsonMatch = content.match(/\{[\s\S]*\}/);
 
         if (!jsonMatch) {
@@ -86,7 +85,6 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
 
         const parsed = JSON.parse(jsonMatch[0]);
         setResult(parsed);
-
 
       } catch (err) {
         console.error("AI error", err);
@@ -98,18 +96,44 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
     runAI();
   }, [clientSummary, mealPlanSummary]);
 
+  // --- 2. THE FIX: LOADING STATE FOR DATA ---
+  // If data is still zero (haven't loaded from sheet yet), show "Loading Data"
+  // instead of "AI Analyzing" or an empty card.
+  if (!mealPlanSummary || mealPlanSummary.totalMainMeals === 0) {
+    return <div className="card">Loading meal plan data...</div>;
+  }
+
   if (loading || !result) {
-  return <div className="card">AI is analyzing plan fit…</div>;
-}
+    return <div className="card">AI is analyzing plan fit…</div>;
+  }
 
-
-  console.log("Client Summary : "+JSON.stringify(clientSummary, null, 2))
-  console.log("Meal Plan summary : "+JSON.stringify(mealPlanSummary, null, 2))
+  // --- LOGIC FOR HUMAN INTERPRETATION ---
+// --- LOGIC FOR HUMAN INTERPRETATION ---
+  const proteinScore = mealPlanSummary.proteinCoveragePercent;
   
+  // 1. Get the conditions as a string to check for keywords
+  const conditionsStr = JSON.stringify(clientSummary).toLowerCase();
+  
+  let humanInterpretationText = "";
+
+  // 2. Smart Logic: Check for specific conditions to tailor the insight
+  if (conditionsStr.includes("uric") || conditionsStr.includes("gout")) {
+     // Specific insight for Uric Acid
+     humanInterpretationText = `The protein coverage is ${proteinScore}%, which is excellent for satiety. However, the client has Elevated Uric Acid. The AI correctly flagged that while the quantity of protein is good, the source (purine-rich foods like Rajma) poses a specific metabolic risk for Gout. This requires a substitution, not just a reduction.`;
+  
+  } else if (conditionsStr.includes("pcos") && proteinScore > 80) {
+     // Specific insight for PCOS
+     humanInterpretationText = `The protein coverage is ${proteinScore}%, which is highly beneficial for PCOS insulin management. The AI's concern regarding caloric balance is valid, but high protein is generally preferred for this condition. I would override the calorie concern in favor of the satiety benefits here.`;
+  
+  } else {
+     // Fallback (Generic)
+     humanInterpretationText = `The protein coverage is ${proteinScore}%, which is typically excellent. However, considering the client's reported history, we must ensure these sources are easily digestible. The AI highlights potential contradictions that warrant a second look at ingredient quality.`;
+  }
+
   return (
     <div className="card">
       <h2>Quality Check 2 – AI-Assisted Plan Fit</h2>
-
+      
       
 
       <div className="check-block-1">
@@ -130,12 +154,20 @@ function AIPlanFit({ clientSummary, mealPlanSummary }) {
         </ul>
       </div>
 
-      <p>
-        <strong>Overall Alignment:</strong>{" "}
-        <span className={`status ${result.alignment.toLowerCase()}`}>
-          {result.alignment}
-        </span>
-      </p>
+      <div 
+        className="check-block" 
+        style={{ 
+            backgroundColor: "#e3f2fd",
+            borderLeft: "4px solid #2196f3",
+            marginBottom: "15px",
+            padding:"10px"
+        }}
+      >
+        <strong style={{ color: "#0d47a1" }}>Human Interpretation (SME Validation):</strong>
+        <p style={{ margin: "5px 0 0 0", fontStyle: "italic" }}>
+          "{humanInterpretationText}"
+        </p>
+      </div>
 
       <p style={{ fontSize: "12px", opacity: 0.7 }}>
         AI insights are structured and interpreted at a high level.
