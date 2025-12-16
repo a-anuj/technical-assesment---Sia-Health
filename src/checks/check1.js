@@ -5,7 +5,8 @@ const PROTEIN_SOURCES = [
   "rajma",
   "curd",
   "greek",
-  "salad"
+  "salad",
+  "chana"
 ];
 
 const PORTION_KEYWORDS = [
@@ -28,7 +29,7 @@ const MEAL_TYPES = [
   "eveningSnack"
 ];
 
-const MAIN_MEALS = ["breakfast", "lunch", "dinner"];
+const MAIN_MEALS = ["breakfast", "lunch", "dinner","eveningSnack"];
 
 // ---------------- HELPERS ----------------
 function estimateProtein(mealText = "") {
