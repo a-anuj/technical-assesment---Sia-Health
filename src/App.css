@@ -63,7 +63,7 @@ body {
 
 /* Main page content (below navbar) */
 .page-container {
-  max-width: 1200px;
+  max-width: 1700px;
   margin: 32px auto;
   padding: 0 20px;
 }
@@ -132,12 +132,13 @@ body {
 }
 
 .check-block {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .check-block ul {
   list-style-type: disc;
   padding-left: 20px;
+  margin-top: 20px;
 }
 
 .check-block li {
@@ -199,7 +200,7 @@ body {
 
 .check-block-1 {
   margin-top: 30px;
-  margin-bottom: 24px;
+  margin-bottom: 2px;
 }
 
 .check-block-1 ul {
