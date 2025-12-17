@@ -107,24 +107,57 @@ This layer exists to demonstrate **responsible AI usage**.
 These assumptions are documented and intentional.
 
 
-## How AI Was Used
+## AI Prompt Logic (Quality Check 2)
 
-- AI is used **only in Check 2**
-- It does **not**:
-  - Recalculate protein
-  - Override rule-based results
-  - Provide medical advice
+The AI-assisted plan fit check is designed to **interpret**, not compute, nutritional quality.
 
-AI receives:
-- Pre-computed nutrition metrics
-- Client health summary
+The prompt is structured with the following logic:
 
-AI produces:
-- High-level alignment assessment
-- Potential concerns
-- Positive signals
+#### 1. Role Definition
+The AI is explicitly instructed to act as a *health-coaching assistant*.
+This constrains the tone and scope of the output.
 
-Human interpretation is layered on top to validate and contextualize AI output.
+#### 2. Separation of Responsibilities
+The prompt clearly states that all meal plan metrics are:
+- Pre-computed
+- Verified
+- Not open to reinterpretation
+
+This ensures the AI does **not**:
+- Recalculate protein
+- Challenge rule-based logic
+- Invent missing nutritional data
+
+#### 3. Context Injection
+Two types of context are provided:
+- **Quantitative context:** Protein coverage, portion clarity, detected sources
+- **Qualitative context:** Client health history and reported patterns
+
+This allows the AI to reason about *fit* rather than *accuracy*.
+
+#### 4. Structured Output Enforcement
+The AI is constrained to return **only valid JSON** with:
+- A limited number of concerns
+- A limited number of positives
+
+This prevents verbose or speculative responses and ensures predictable parsing.
+
+#### 5. Explicit Guardrails
+The prompt includes explicit rules to prevent:
+- Hallucinated missing protein when coverage is adequate
+- Medical advice or diagnoses
+- Fabrication of unprovided data
+
+#### 6. Interpretation-Oriented Questions
+Rather than asking for recommendations, the prompt focuses on:
+- Alignment with medical history
+- Contradictions with health logs
+- High-level concerns
+
+This aligns the AI’s role with interpretation and validation, not prescription.
+
+Overall, the prompt is intentionally restrictive to ensure the AI functions as a **controlled reasoning layer** rather than a decision-maker.
+
 
 
 
