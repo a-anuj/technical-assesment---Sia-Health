@@ -143,3 +143,23 @@ Human interpretation is layered on top to validate and contextualize AI output.
   - Feeds these estimates into the existing validation and AI interpretation layers
 
 
+### Running the Project Locally
+
+1. Clone the repository
+  ```bash
+  git clone https://github.com/a-anuj/technical-assesment---Sia-Health.git
+  cd technical-assesment--Sia-Health
+  ```
+2. Install dependencies:
+  ```
+    npm install
+  ```
+3. Add a `.env` file with:
+  ```bash
+    VITE_GROQ_API_KEY=your_api_key
+  ```
+
+4. Start the app:
+  ```
+   npm run dev
+  ```
